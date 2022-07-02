@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC, useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-function App() {
+import { Principal } from './Places/containers/Principal'
+
+import { Header } from './Shared/components/Global/Header'
+import { Users } from './User/containers/Pokemons'
+
+import { ThemeProvider } from '@mui/material'
+import { Light } from './Shared/Themes/Light'
+import { Dark } from './Shared/Themes/Dark'
+
+export const App: FC = () => {
+
+  const [theme, setTheme] = useState(Light)
+
+  const themeChangeHandler = () => setTheme(theme === Light ? Dark : Light)
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Header themeChangeHandler={themeChangeHandler} />
+        <Routes>
+          <Route path="/" element={<Principal />} />
+          <Route path="/Users" element={<Users />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+  )
 }
-
-export default App;
